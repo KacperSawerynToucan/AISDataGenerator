@@ -13,7 +13,7 @@ public class Main {
 
         MockNeat m = MockNeat.threadLocal();
 
-        final Path path = Paths.get("C:\\Users\\Kacper\\Downloads\\filtered6.csv");
+        final Path path = Paths.get("C:\\Users\\Kacper\\Downloads\\filtered7.csv");
 
         m.fmt("#{MMSI},#{TSTAMP},#{LONGITUDE},#{LATITUDE},#{COG},#{SOG},#{HEADING},#{NAVSTAT},#{IMO},#{NAME},#{CALLSIGN},#{TYPE},#{A},#{B},#{C},#{D},#{DRAUGHT},#{DEST},#{ETA}")
                 .param("MMSI", m.ints().range(100000000, 900000000))
@@ -33,7 +33,7 @@ public class Main {
                 .param("C", m.doubles().range(0, 15))
                 .param("D", m.doubles().range(0, 15))
                 .param("DRAUGHT", m.doubles().range(1, 5))
-                .param("DEST", m.cities().toString())
+                .param("DEST", m.cities().capitals())
                 .param("ETA", m.localDates())
                 .list(60000)
                 .consume(list -> {
