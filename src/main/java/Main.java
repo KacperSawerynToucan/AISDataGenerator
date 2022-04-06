@@ -4,16 +4,20 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalTime;
 
 import static java.nio.file.StandardOpenOption.*;
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
+        final Path path = Paths.get("C:\\Users\\Kacper\\Downloads\\filtered11.csv");
+        final int records = 300000;
 
         MockNeat m = MockNeat.threadLocal();
+        System.out.println("START: " + LocalTime.now());
 
-        final Path path = Paths.get("C:\\Users\\Kacper\\Downloads\\filtered7.csv");
+
 
         m.fmt("#{MMSI},#{TSTAMP},#{LONGITUDE},#{LATITUDE},#{COG},#{SOG},#{HEADING},#{NAVSTAT},#{IMO},#{NAME},#{CALLSIGN},#{TYPE},#{A},#{B},#{C},#{D},#{DRAUGHT},#{DEST},#{ETA}")
                 .param("MMSI", m.ints().range(100000000, 900000000))
@@ -35,7 +39,7 @@ public class Main {
                 .param("DRAUGHT", m.doubles().range(1, 5))
                 .param("DEST", m.cities().capitals())
                 .param("ETA", m.localDates())
-                .list(60000)
+                .list(records)
                 .consume(list -> {
                     try {
                         Files.write(path, list, CREATE_NEW, APPEND);
@@ -43,6 +47,7 @@ public class Main {
                         e.printStackTrace();
                     }
                 });
+        System.out.println("STOP: " + LocalTime.now());
     }
 }
 
